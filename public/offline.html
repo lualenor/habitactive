@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#FFF8E6" />
+    <title>Sin conexión · Habitactive</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background:
+          radial-gradient(at 92% 4%, rgba(255, 225, 137, 0.4) 0, transparent 34%),
+          radial-gradient(at 4% 18%, rgba(255, 240, 196, 0.55) 0, transparent 30%),
+          #fffdf5;
+        color: #2d2718;
+        font-family: "Nunito", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+        text-align: center;
+      }
+      main {
+        max-width: 390px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 32px;
+        text-decoration: none;
+        color: #2d2718;
+      }
+      .brand img {
+        width: 44px;
+        height: 44px;
+        object-fit: contain;
+        border-radius: 14px;
+        background: #ffe8a8;
+      }
+      .brand span {
+        font-size: 24px;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+      }
+      .brand b {
+        color: #b88916;
+      }
+      .icon {
+        width: 68px;
+        height: 68px;
+        margin: 0 auto 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 24px;
+        background: #ffe8a8;
+        color: #8a6512;
+      }
+      h1 {
+        margin: 0;
+        font-size: 36px;
+        line-height: 1.05;
+        letter-spacing: -0.05em;
+        font-weight: 900;
+      }
+      p {
+        margin: 14px 0 0;
+        color: #5f553f;
+        font-size: 15px;
+        line-height: 1.6;
+        font-weight: 600;
+      }
+      .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 28px;
+      }
+      a.button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        border-radius: 999px;
+        padding: 12px 24px;
+        background: #2d2718;
+        color: #fffdf5;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 800;
+      }
+      a.secondary {
+        background: rgba(255, 255, 255, 0.7);
+        color: #2d2718;
+        border: 1px solid #ead8a5;
+      }
+      footer {
+        margin-top: 40px;
+        font-size: 10px;
+        font-weight: 700;
+        color: #b4a98f;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="brand" href="/" aria-label="Habitactive, ir al inicio">
+        <img src="/brand/logo-mark.png" alt="" />
+        <span>Habit<b>active</b></span>
+      </a>
+
+      <div class="icon" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17.5 19a4.5 4.5 0 0 0 .42-8.98A6 6 0 0 0 6.34 9.6 4 4 0 0 0 7 17.9" />
+          <path d="m9.5 14.5 5-5" />
+          <path d="m9.5 9.5 5 5" />
+        </svg>
+      </div>
+
+      <h1>Estás sin conexión</h1>
+      <p>
+        Tu intención sigue aquí. Cuando recuperes la conexión, podrás marcar tus
+        hábitos y ver tus rachas actualizadas.
+      </p>
+
+      <div class="actions">
+        <a class="button" href="/dashboard">Reintentar</a>
+        <a class="button secondary" href="/">Volver al inicio</a>
+      </div>
+
+      <footer>Habitactive · Privado por diseño</footer>
+    </main>
+  </body>
+</html>

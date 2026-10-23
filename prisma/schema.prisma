@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum HabitCategory {
+  SPIRITUAL
+  INTELLECTUAL
+  PHYSICAL
+  SOCIAL
+}
+
+enum HabitFrequency {
+  DAILY
+  WEEKLY
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  passwordHash  String
+  image         String?
+  timeZone      String   @default("America/Bogota")
+  lastLoginAt   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  habits              Habit[]
+  habitLogs           HabitLog[]
+  challengesCreated   SocialChallenge[]   @relation("ChallengeCreator")
+  challengeParticipations ChallengeParticipant[]
+
+  @@index([createdAt])
+}
+
+model Habit {
+  id             String         @id @default(cuid())
+  userId         String
+  name           String
+  description    String?
+  category       HabitCategory
+  frequency      HabitFrequency @default(DAILY)
+  /// Meta semanal. Para DAILY se usa 7; para WEEKLY, de 1 a 7.
+  targetPerWeek  Int            @default(7)
+  currentStreak  Int            @default(0)
+  bestStreak     Int            @default(0)
+  startDate      DateTime       @default(now())
+  archivedAt     DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  user User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  logs HabitLog[]
+
+  @@index([userId, archivedAt])
+  @@index([userId, createdAt])
+}
+
+/// `day` es la fecha civil local (YYYY-MM-DD) y es la fuente de verdad para
+/// calcular rachas. `date` guarda el mediodía local como instante UTC para
+/// consultas por rango sin saltos de día por zona horaria o DST.
+model HabitLog {
+  id        String   @id @default(cuid())
+  habitId   String
+  userId    String
+  day       String   @db.VarChar(10)
+  date      DateTime
+  createdAt DateTime @default(now())
+
+  habit Habit @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([habitId, day])
+  @@index([userId, day])
+  @@index([habitId, date])
+}
+
+model SocialChallenge {
+  id          String         @id @default(cuid())
+  title       String
+  description String
+  category    HabitCategory
+  targetValue Int
+  unit        String         @default("días")
+  startDate   DateTime
+  endDate     DateTime
+  isPublic    Boolean        @default(true)
+  createdById String
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  createdBy    User                   @relation("ChallengeCreator", fields: [createdById], references: [id], onDelete: Cascade)
+  participants ChallengeParticipant[]
+
+  @@index([isPublic, startDate, endDate])
+  @@index([createdById])
+}
+
+model ChallengeParticipant {
+  id            String    @id @default(cuid())
+  challengeId   String
+  userId        String
+  progress      Int       @default(0)
+  joinedAt      DateTime  @default(now())
+  lastCheckInAt DateTime?
+  updatedAt     DateTime  @updatedAt
+
+  challenge SocialChallenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([challengeId, userId])
+  @@index([userId])
+  @@index([challengeId, progress])
+}
